@@ -120,6 +120,12 @@ python build.py -t $subject
 #执行打包ipa命令
 cocoapods-build $DIR
 
+cd ${DIR}/build/ipa-build/
+
+mv *.ipa ${subject}.ipa
+
+cp ${subject}.ipa /Users/dengfeng/Documents/share/
+
 
 
 

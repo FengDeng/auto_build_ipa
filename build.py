@@ -567,7 +567,7 @@ if __name__ == '__main__':
          build_app.clean()
          time.sleep(2)
 
-    build_app.build()
+    # build_app.build()
 
 
 

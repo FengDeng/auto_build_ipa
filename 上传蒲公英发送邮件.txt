@@ -1,0 +1,15 @@
+cd /Users/DengFeng/.jenkins/jobs/IaskuTeacher/workspace/build/ipa-build
+mv *.ipa IaskuTeacher.ipa
+resultJson=$(curl  -F file=@/Users/DengFeng/.jenkins/jobs/IaskuTeacher/workspace/build/ipa-build/IaskuTeacher.ipa -F password=iasku2015 -F _api_key=9be7fa4c20b65579fec32971dafd5e7e -F publishRange=2 -F uKey=c0fa6866869eeddee8241b0c520cc5eb  http://www.pgyer.com/apiv1/app/upload)
+echo ${resultJson}
+
+
+AppName=$(echo ${resultJson}|jq .data.appName)
+PgyerUrl=http://www.pgyer.com/
+JsonUrl=$(echo ${resultJson}|jq .data.appShortcutUrl | sed 's/"//g')
+APPUrl=${PgyerUrl}${JsonUrl}
+AppBuildVersion=$(echo ${resultJson}|jq .data.appBuildVersion)
+AppCreated=$(echo ${resultJson}|jq .data.appCreated| sed 's/ /->/g')
+MailContent=$(echo ${resultJson}| jq .)
+content=$'AppName : ${AppName}\nDownload:${APPUrl}'
+python /Users/DengFeng/Desktop/AutoBuild/SendmailViaSMTP.py --host="smtp.exmail.qq.com" --from="dengfeng@iasku.net" --to="dev@iasku.net" --user="dengfeng@iasku.net" --password="yuanyuan00" --subject="IaskuTeacher system build" --content=${AppName}\ build\ is\ success\ ,now\ build\ version\ is\ ${AppBuildVersion},\ download:${APPUrl}\ \ \ password:iasku2015,\ build\ time\ is\ ${AppCreated} 
